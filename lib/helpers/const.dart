@@ -13,51 +13,47 @@ class Constants {
   static Color badgeColor = Colors.red;
 
   static ThemeData lightTheme = ThemeData(
-    backgroundColor: lightBG,
     primaryColor: lightPrimary,
     hintColor: lightAccent,
-    errorColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       elevation: 0,
       toolbarTextStyle: TextTheme(
-        headline6: TextStyle(
+        titleLarge: TextStyle(
           color: darkBG,
           fontSize: 18.0,
           fontWeight: FontWeight.w800,
         ),
-      ).bodyText2, titleTextStyle: TextTheme(
-        headline6: TextStyle(
+      ).bodyMedium, titleTextStyle: TextTheme(
+        titleLarge: TextStyle(
           color: darkBG,
           fontSize: 18.0,
           fontWeight: FontWeight.w800,
         ),
-      ).headline6,
+      ).titleLarge,
     ),
   );
 
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    backgroundColor: darkBG,
     primaryColor: darkPrimary,
     hintColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
-    errorColor: darkAccent,
     appBarTheme: AppBarTheme(
       elevation: 0,
       toolbarTextStyle: TextTheme(
-        headline6: TextStyle(
+        titleLarge: TextStyle(
           color: lightBG,
           fontSize: 18.0,
           fontWeight: FontWeight.w800,
         ),
-      ).bodyText2, titleTextStyle: TextTheme(
-        headline6: TextStyle(
-          color: lightBG,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w800,
-        ),
-      ).headline6,
+      ).bodyMedium, titleTextStyle: TextTheme(
+      titleLarge: TextStyle(
+        color: lightBG,
+        fontSize: 18.0,
+        fontWeight: FontWeight.w800,
+      ),
+    ).titleLarge,
     ),
   );
 }

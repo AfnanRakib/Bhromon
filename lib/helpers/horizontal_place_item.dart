@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:bhromon/pages/details.dart';
+import '../helpers/AttractionModel.dart';
 
 class HorizontalPlaceItem extends StatelessWidget {
-  final Map place;
+  final Attraction attraction;
 
-  HorizontalPlaceItem({required this.place});
+  HorizontalPlaceItem({required this.attraction});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +19,8 @@ class HorizontalPlaceItem extends StatelessWidget {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  "${place["img"]}",
+                child: Image.network(
+                  attraction.smallPhotoUrl,
                   height: 178.0,
                   width: 140.0,
                   fit: BoxFit.cover,
@@ -29,7 +30,7 @@ class HorizontalPlaceItem extends StatelessWidget {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "${place["name"]}",
+                  attraction.name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15.0,
@@ -42,7 +43,7 @@ class HorizontalPlaceItem extends StatelessWidget {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "${place["location"]}",
+                  attraction.locationString,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 13.0,
@@ -59,7 +60,7 @@ class HorizontalPlaceItem extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return Details();
+                return Details(attraction: attraction,);
               },
             ),
           );

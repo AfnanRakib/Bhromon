@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:bhromon/pages/details.dart';
+import '../helpers/AttractionModel.dart';
 
 class VerticalPlaceItem extends StatelessWidget {
-  final Map place;
-  VerticalPlaceItem({required this.place});
+  final Attraction attraction;
+
+  VerticalPlaceItem({required this.attraction});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,8 @@ class VerticalPlaceItem extends StatelessWidget {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.circular(5),
-                child: Image.asset(
-                  "${place["img"]}",
+                child: Image.network(
+                  attraction.smallPhotoUrl,
                   height: 70.0,
                   width: 70.0,
                   fit: BoxFit.cover,
@@ -35,7 +37,7 @@ class VerticalPlaceItem extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "${place["name"]}",
+                        attraction.name,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 14.0,
@@ -56,7 +58,7 @@ class VerticalPlaceItem extends StatelessWidget {
                         Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "${place["location"]}",
+                            attraction.locationString,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 13.0,
@@ -72,7 +74,7 @@ class VerticalPlaceItem extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "${place["price"]}",
+                        'Reviews: '+attraction.numReviews,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0,
@@ -91,7 +93,7 @@ class VerticalPlaceItem extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return Details();
+                return Details(attraction: attraction,);
               },
             ),
           );

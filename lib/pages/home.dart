@@ -1,19 +1,75 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:bhromon/helpers/places.dart';
-import 'package:bhromon/helpers/horizontal_place_item.dart';
-import 'package:bhromon/helpers/icon_badge.dart';
-import 'package:bhromon/helpers/vertical_place_item.dart';
+import 'package:http/http.dart' as http;
+import '../helpers/AttractionModel.dart';
+import '../helpers/horizontal_place_item.dart';
+import '../helpers/vertical_place_item.dart';
 
-class Home extends StatelessWidget {
-  final TextEditingController _searchControl = new TextEditingController();
+class Home extends StatefulWidget {
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final TextEditingController _searchControl = TextEditingController();
+
+  List<Attraction> attractions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    //_fetchAttractions();
+  }
+
+  Future<void> _fetchAttractions() async {
+    try {
+      final Uri uri = Uri.parse('https://travel-advisor.p.rapidapi.com/attractions/list-by-latlng')
+          .replace(queryParameters: {
+        'longitude': '109.19553',
+        'latitude': '12.235588',
+        'lunit': 'km',
+        'currency': 'BDT',
+        'limit': '4',
+        'lang': 'en_US',
+      });
+
+      final Map<String, String> headers = {
+        'X-RapidAPI-Key': '58db07e382mshb0ba8bdce54360ap16822djsnd7382ff19b11',
+        'X-RapidAPI-Host': 'travel-advisor.p.rapidapi.com',
+      };
+
+      final http.Response response = await http.get(uri, headers: headers);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+
+        List<Attraction> fetchedAttractions = [];
+        for (var data in jsonMap['data']) {
+          Attraction attraction = Attraction.fromJson(data);
+          fetchedAttractions.add(attraction);
+        }
+
+        setState(() {
+          attractions = fetchedAttractions;
+        });
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            icon: IconBadge(
-              icon: Icons.notifications, key: null, size: 30, color: Colors.white,
+            icon: Icon(
+              Icons.notifications,
+              size: 30,
+              color: Colors.white,
             ),
             onPressed: () {},
           ),
@@ -32,7 +88,7 @@ class Home extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.blueGrey[50],
@@ -59,7 +115,7 @@ class Home extends StatelessWidget {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "E.g: New York, United States",
+                  hintText: "E.g: Dhaka, Bangladesh",
                   prefixIcon: Icon(
                     Icons.location_on,
                     color: Colors.blueGrey[300],
@@ -72,7 +128,7 @@ class Home extends StatelessWidget {
                 maxLines: 1,
                 controller: _searchControl,
               ),
-            )
+            ),
           ),
           buildHorizontalList(context),
           buildVerticalList(),
@@ -81,7 +137,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  buildHorizontalList(BuildContext context) {
+  Widget buildHorizontalList(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 10.0, left: 20.0),
       height: 250.0,
@@ -89,26 +145,26 @@ class Home extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         primary: false,
-        itemCount: places == null ? 0 : places.length,
+        itemCount: attractions.length,
         itemBuilder: (BuildContext context, int index) {
-          Map place = places.reversed.toList()[index];
-          return HorizontalPlaceItem(place: place);
+          Attraction attraction = attractions[index];
+          return HorizontalPlaceItem(attraction: attraction);
         },
       ),
     );
   }
 
-  buildVerticalList() {
+  Widget buildVerticalList() {
     return Padding(
       padding: EdgeInsets.all(20.0),
       child: ListView.builder(
         primary: false,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: places == null ? 0 : places.length,
+        itemCount: attractions.length,
         itemBuilder: (BuildContext context, int index) {
-          Map place = places[index];
-          return VerticalPlaceItem(place: place);
+          Attraction attraction = attractions[index];
+          return VerticalPlaceItem(attraction: attraction);
         },
       ),
     );

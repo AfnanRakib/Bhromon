@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:bhromon/pages/home.dart';
-import 'package:bhromon/helpers/icon_badge.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -18,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
-        children: List.generate(4, (index) => Home()),
+        children: List.generate(4, (index) => getPage(index)),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -28,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
             SizedBox(width: 7.0),
             barIcon(icon: Icons.home, page: 0),
             barIcon(icon: Icons.favorite, page: 1),
-            barIcon(icon: Icons.mode_comment, page: 2, badge: true),
+            barIcon(icon: Icons.mode_comment, page: 2,),
             barIcon(icon: Icons.person, page: 3),
             SizedBox(width: 7.0),
           ],
@@ -36,6 +35,21 @@ class _MainScreenState extends State<MainScreen> {
         color: Theme.of(context).primaryColor,
       ),
     );
+  }
+
+  Widget getPage(int index) {
+    switch (index) {
+      case 0:
+        return Home();
+      case 1:
+        return Container();
+      case 2:
+        return Container();
+      case 3:
+        return Container();
+      default:
+        return Container();
+    }
   }
 
   void navigationTapped(int page) {
@@ -60,12 +74,13 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  Widget barIcon({IconData icon = Icons.home, int page = 0, bool badge = false}) {
+  Widget barIcon({IconData icon = Icons.home, int page = 0,}) {
     return IconButton(
-      icon: badge ? IconBadge(icon: icon, size: 24.0, key: null,color: Colors.blueGrey,) : Icon(icon, size: 24.0),
-      color:
-          _page == page ? Theme.of(context).primaryColorDark : Colors.blueGrey,
-      onPressed: () => _pageController.jumpToPage(page),
+      icon: Icon(icon, size: 24.0),
+      color: _page == page ? Colors.blue : Colors.blueGrey,
+      onPressed: () {
+        _pageController.jumpToPage(page);
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bhromon/pages/home.dart';
+import 'package:bhromon/pages/maps.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -26,8 +27,8 @@ class _MainScreenState extends State<MainScreen> {
           children: <Widget>[
             SizedBox(width: 7.0),
             barIcon(icon: Icons.home, page: 0),
-            barIcon(icon: Icons.favorite, page: 1),
-            barIcon(icon: Icons.mode_comment, page: 2,),
+            barIcon(icon: Icons.explore, page: 1),
+            barIcon(icon: Icons.messenger, page: 2,),
             barIcon(icon: Icons.person, page: 3),
             SizedBox(width: 7.0),
           ],
@@ -42,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         return Home();
       case 1:
-        return Container();
+        return Container();//Maps();
       case 2:
         return Container();
       case 3:

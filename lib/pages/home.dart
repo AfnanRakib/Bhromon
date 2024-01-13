@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../helpers/AttractionModel.dart';
-import '../helpers/horizontal_place_item.dart';
-import '../helpers/vertical_place_item.dart';
+import 'package:bhromon/helpers/AttractionModel.dart';
+import 'package:bhromon/helpers/horizontal_place_item.dart';
+import 'package:bhromon/helpers/vertical_place_item.dart';
 
 class Home extends StatefulWidget {
   @override

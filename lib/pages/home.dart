@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bhromon/helpers/AttractionModel.dart';
@@ -14,22 +16,24 @@ class _HomeState extends State<Home> {
   final TextEditingController _searchControl = TextEditingController();
 
   List<Attraction> attractions = [];
+  String latitude = '12.235588';
+  String longitude = '109.19553';
 
   @override
   void initState() {
     super.initState();
+    _readAttractionsFromFile();
     //_fetchAttractions();
   }
 
   Future<void> _fetchAttractions() async {
     try {
-      final Uri uri = Uri.parse('https://travel-advisor.p.rapidapi.com/attractions/list-by-latlng')
-          .replace(queryParameters: {
-        'longitude': '109.19553',
-        'latitude': '12.235588',
+      final Uri uri = Uri.parse('https://travel-advisor.p.rapidapi.com/attractions/list-by-latlng').replace(queryParameters: {
+        'longitude': longitude,
+        'latitude': latitude,
         'lunit': 'km',
         'currency': 'BDT',
-        'limit': '4',
+        'limit': '8',
         'lang': 'en_US',
       });
 
@@ -49,6 +53,8 @@ class _HomeState extends State<Home> {
           fetchedAttractions.add(attraction);
         }
 
+        _writeAttractionsToFile(response.body);
+
         setState(() {
           attractions = fetchedAttractions;
         });
@@ -59,6 +65,40 @@ class _HomeState extends State<Home> {
       print('Error: $error');
     }
   }
+
+  void _writeAttractionsToFile(String data) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      File file = File('${directory.path}/attractions.txt');
+      file.writeAsStringSync(data);
+    } catch (error) {
+      print('Error writing file: $error');
+    }
+  }
+
+  void _readAttractionsFromFile() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      File file = File('${directory.path}/attractions.txt');
+      if (file.existsSync()) {
+        String data = file.readAsStringSync();
+        Map<String, dynamic> jsonMap = json.decode(data);
+
+        List<Attraction> savedAttractions = [];
+        for (var data in jsonMap['data']) {
+          Attraction attraction = Attraction.fromJson(data);
+          savedAttractions.add(attraction);
+        }
+
+        setState(() {
+          attractions = savedAttractions;
+        });
+      }
+    } catch (error) {
+      print('Error reading file: $error');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +111,9 @@ class _HomeState extends State<Home> {
               size: 30,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              _fetchAttractions();
+            },
           ),
         ],
       ),

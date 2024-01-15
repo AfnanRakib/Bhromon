@@ -23,7 +23,7 @@ class Attraction {
   bool isClosed;
   bool isLongClosed;
   String description;
-  String locationId; // Added locationId field
+  String locationId;
 
   Attraction({
     required this.name,
@@ -40,7 +40,7 @@ class Attraction {
   });
 
   factory Attraction.fromJson(Map<String, dynamic> json) {
-    String locationId = json['ancestors'][0]['location_id']; // Extract location_id from ancestors
+    String locationId = json['ancestors'][0]['location_id'];
     return Attraction(
       name: json['name'],
       latitude: json['latitude'],

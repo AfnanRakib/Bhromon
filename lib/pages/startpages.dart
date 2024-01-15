@@ -19,21 +19,12 @@ class StartPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  FadeInUp(duration: Duration(milliseconds: 1000), child:Text("Welcome", style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30
-                  ),)),
-                  SizedBox(height: 20,),
-                  FadeInUp(duration: Duration(milliseconds: 1200), child: Text("Automatic identity verification which enables you to verify your identity",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.grey[700],
-                        fontSize: 15
-                    ),)),
-                ],
-              ),
+              FadeInUp(duration: Duration(milliseconds: 1000),
+                  child:Text("Welcome",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30
+              ),)),
               FadeInUp(duration: Duration(milliseconds: 1400), child: Container(
                 height: MediaQuery.of(context).size.height / 3,
                 decoration: BoxDecoration(

@@ -1,6 +1,8 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:bhromon/pages/Tools.dart';
+import 'package:bhromon/pages/maps.dart';
 import 'package:flutter/material.dart';
 import 'package:bhromon/pages/home.dart';
-import 'package:bhromon/pages/maps.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -14,11 +16,12 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
+      body: FadeInUp(duration: Duration(milliseconds: 1000), child: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: List.generate(4, (index) => getPage(index)),
+      ),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -29,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
             barIcon(icon: Icons.home, page: 0),
             barIcon(icon: Icons.explore, page: 1),
             barIcon(icon: Icons.messenger, page: 2,),
-            barIcon(icon: Icons.person, page: 3),
+            barIcon(icon: Icons.window, page: 3),
             SizedBox(width: 7.0),
           ],
         ),
@@ -43,11 +46,11 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         return Home();
       case 1:
-        return Container();//Maps();
+        return Maps();
       case 2:
         return Container();
       case 3:
-        return Container();
+        return Tools();
       default:
         return Container();
     }
@@ -78,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget barIcon({IconData icon = Icons.home, int page = 0,}) {
     return IconButton(
       icon: Icon(icon, size: 24.0),
-      color: _page == page ? Colors.blue : Colors.blueGrey,
+      color: _page == page ? Color.fromRGBO(90, 185, 141, 1): Colors.blueGrey,
       onPressed: () {
         _pageController.jumpToPage(page);
       },

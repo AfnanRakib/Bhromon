@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:bhromon/pages/Tools.dart';
 import 'package:bhromon/pages/maps.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bhromon/pages/home.dart';
 
@@ -12,7 +14,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late PageController _pageController;
   int _page = 0;
-
+  final user=FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

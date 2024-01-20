@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "247425422872",
+    "project_id": "bhromon-6e9c5",
+    "storage_bucket": "bhromon-6e9c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247425422872:android:c37dde6af83bb6ecf2156d",
+        "android_client_info": {
+          "package_name": "com.example.bhromon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCojJm7F5hhS3GLF1gAiMl4Pc8e_WJ-CIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

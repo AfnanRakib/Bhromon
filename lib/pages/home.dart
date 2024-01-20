@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -107,12 +108,12 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.notifications,
+              Icons.logout,
               size: 30,
               color: Colors.white,
             ),
             onPressed: () {
-              _fetchAttractions();
+              FirebaseAuth.instance.signOut();
             },
           ),
         ],
@@ -175,6 +176,9 @@ class _HomeState extends State<Home> {
           buildHorizontalList(context),
           buildVerticalList(),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){_fetchAttractions();},
       ),
     );
   }

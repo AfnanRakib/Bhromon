@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -45,9 +46,23 @@ class _MapPageState extends State<Maps> {
     );*/
 
     return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.logout,
+              size: 30,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+          ),
+        ],
+      ),
       body: _currentPos == null ?
       Container(
-        color: Colors.blueGrey,
+        color: Theme.of(context).primaryColor,
         child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,17 +70,17 @@ class _MapPageState extends State<Maps> {
             //loading animation can be putdown here
             children: <Widget>[
               SpinKitFoldingCube(
-                color: Colors.lightGreenAccent.shade400,
+                color: Color.fromRGBO(90, 185, 141, 1),
                 duration: Duration(milliseconds: 1000),
               ),
-              Text(" loading....",
+/*              Text(" loading....",
                 style:TextStyle(
                     fontSize: 50,
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.bold,
                     color: Colors.greenAccent.shade100
                 ) ,
-              ),
+              ),*/
             ]
 
         ),

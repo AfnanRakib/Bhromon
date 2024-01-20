@@ -1,9 +1,96 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:bhromon/helpers/AuthCheck.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:bhromon/pages/main_screen.dart';
 import 'package:bhromon/helpers/const.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController=TextEditingController();
+  final passController=TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
+
+  void passReset() async{
+    try{
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text.trim(),);
+      showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            alignment: Alignment.center,
+            title: Text("Password Reset Email Sent", style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18
+            ),
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
+      );
+    }on FirebaseAuthException catch(e){
+      showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            alignment: Alignment.center,
+            title: Text(e.message.toString(), style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18
+            ),
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
+      );
+    }
+  }
+  void loggedin() async{
+    showDialog(
+        context: context,
+        builder: (context){
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+    );
+    try{
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passController.text,
+      );
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthCheck()));
+    }on FirebaseAuthException catch (e){
+      print(e);
+      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            alignment: Alignment.center,
+            title: Text(e.message.toString(), style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18
+                ),
+              textAlign: TextAlign.center,
+              ),
+            );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,8 +133,8 @@ class LoginPage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: <Widget>[
-                        FadeInUp(duration: Duration(milliseconds: 1200), child: makeInput(label: "Email")),
-                        FadeInUp(duration: Duration(milliseconds: 1300), child: makeInput(label: "Password", obscureText: true)),
+                        FadeInUp(duration: Duration(milliseconds: 1200), child: makeInput(label: "Email",fieldcontroller: emailController)),
+                        FadeInUp(duration: Duration(milliseconds: 1300), child: makeInput(label: "Password",fieldcontroller: passController, obscureText: true)),
                       ],
                     ),
                   ),
@@ -68,8 +155,9 @@ class LoginPage extends StatelessWidget {
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                          loggedin();
+                          //Navigator.pop(context);
+                          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
                         },
                         color: ColorSys.secoundryLight,
                         elevation: 0,
@@ -77,7 +165,7 @@ class LoginPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50)
                         ),
                         child: Text("Login", style: TextStyle(
-                          fontWeight: FontWeight.w600, 
+                          fontWeight: FontWeight.w600,
                           fontSize: 18
                         ),),
                       ),
@@ -86,10 +174,12 @@ class LoginPage extends StatelessWidget {
                   FadeInUp(duration: Duration(milliseconds: 1500), child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("Don't have an account?"),
-                      Text("Sign up", style: TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 18
-                      ),),
+                      GestureDetector(
+                        onTap: passReset,
+                        child: Text("Forgot Password?", style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 18
+                        ),),
+                      ),
                     ],
                   ))
                 ],
@@ -110,7 +200,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget makeInput({label, obscureText = false}) {
+  Widget makeInput({label,fieldcontroller, obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -122,6 +212,7 @@ class LoginPage extends StatelessWidget {
         SizedBox(height: 5,),
         TextField(
           obscureText: obscureText,
+          controller: fieldcontroller,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(

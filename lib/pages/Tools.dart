@@ -1,4 +1,5 @@
 import 'package:bhromon/helpers/const.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,46 +22,119 @@ class _ToolsState extends State<Tools> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.logout,
+              size: 30,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+          ),
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(20.0),
-            child: MaterialButton(
-              minWidth: double.infinity,
-              height: 60,
-              onPressed: () {
-                _launchUrl('https://gozayaan.com/?search=flight');
-              },
-              color: ColorSys.secoundryLight,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)
+            padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
+            child: Text(
+              "Necessary Tools",
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.w600,
               ),
-              child: Text("Flight", style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18
-              ),),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(20.0),
-            child: MaterialButton(
-              minWidth: double.infinity,
-              height: 60,
-              onPressed: () {
-                _launchUrl('https://gozayaan.com/?search=hotel');
-              },
-              color: ColorSys.secoundryLight,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)
+          SizedBox(height: 20),
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 5,
+                      child: ListTile(
+                        onTap: () {
+                          _launchUrl('https://gozayaan.com/?search=flight');
+                        },
+                        title: Text(
+                          "Flight Booking",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
+                        leading: Icon(
+                          Icons.flight,
+                          color: ColorSys.secoundryLight,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 5,
+                      child: ListTile(
+                        onTap: () {
+                          _launchUrl('https://gozayaan.com/?search=hotel');
+                        },
+                        title: Text(
+                          "Hotel Booking",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
+                        leading: Icon(
+                          Icons.hotel,
+                          color: ColorSys.secoundryLight,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 5,
+                      child: ListTile(
+                        onTap: () {
+                          _launchUrl('https://translate.google.com/');
+                        },
+                        title: Text(
+                          "Google Translator",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
+                        leading: Icon(
+                          Icons.translate,
+                          color: ColorSys.secoundryLight,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              child: Text("Hotel", style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18
-              ),),
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:bhromon/gptMain/gpt_Main.dart';
 import 'package:bhromon/pages/Tools.dart';
 import 'package:bhromon/pages/maps.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,9 +49,9 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         return Home();
       case 1:
-        return Maps();
+        return Container();//Maps();
       case 2:
-        return Container();
+        return Container();//bhromon_gpt();
       case 3:
         return Tools();
       default:

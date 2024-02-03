@@ -4,7 +4,7 @@ import 'package:bhromon/widgets/chat_item.dart';
 class AIHandler {
  //late final request;
   final _openAI = OpenAI.instance.build(
-    token: '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',
+    token: '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',
     baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 20)),
     enableLog: true,
   );

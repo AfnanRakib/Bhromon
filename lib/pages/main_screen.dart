@@ -49,9 +49,9 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         return Home();
       case 1:
-        return Container();//Maps();
+        return Maps();
       case 2:
-        return Container();//bhromon_gpt();
+        return bhromon_gpt();
       case 3:
         return Tools();
       default:

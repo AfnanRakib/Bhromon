@@ -13,8 +13,8 @@ class HorizontalPlaceItem extends StatelessWidget {
       padding: const EdgeInsets.only(right: 20.0),
       child: InkWell(
         child: Container(
-          height: 250.0,
-          width: 140.0,
+          height: 220.0,
+          width: 155.0,
           child: Column(
             children: <Widget>[
               ClipRRect(
@@ -22,37 +22,39 @@ class HorizontalPlaceItem extends StatelessWidget {
                 child: Image.network(
                   attraction.smallPhotoUrl,
                   height: 178.0,
-                  width: 140.0,
+                  width: 170.0,
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(height: 7.0),
               Container(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.topLeft,
                 child: Text(
                   attraction.name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15.0,
+                    color: Colors.white
                   ),
                   maxLines: 2,
                   textAlign: TextAlign.left,
                 ),
               ),
-              SizedBox(height: 3.0),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  attraction.locationString,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13.0,
-                    color: Colors.blueGrey[300],
+              Expanded(
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    attraction.locationString,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13.0,
+                      color: Colors.blueGrey[300],
+                    ),
+                    maxLines: 1,
+                    textAlign: TextAlign.left,
                   ),
-                  maxLines: 1,
-                  textAlign: TextAlign.left,
                 ),
               ),
+              //SizedBox(height: 1.0),
             ],
           ),
         ),

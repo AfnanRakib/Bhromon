@@ -105,6 +105,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.greenAccent,
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -120,56 +121,64 @@ class _HomeState extends State<Home> {
       ),
       body: ListView(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Text(
-              "Where are you going?",
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.w600,
+          Container(
+            color: Colors.greenAccent,
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                "Where are you going?",
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white
+                ),
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blueGrey[50],
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
+          Container(
+            color: Colors.greenAccent,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Container(
+
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey[50],
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
                 ),
-              ),
-              child: TextField(
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.blueGrey[300],
-                ),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  hintText: "E.g: Dhaka, Bangladesh",
-                  prefixIcon: Icon(
-                    Icons.location_on,
-                    color: Colors.blueGrey[300],
-                  ),
-                  hintStyle: TextStyle(
+                child: TextField(
+                  style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.blueGrey[300],
                   ),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(10.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    hintText:  "E.g: Dhaka, Bangladesh",
+                    prefixIcon: Icon(
+                      Icons.location_on,
+                      color: Colors.blueGrey[300],
+                    ),
+                    hintStyle: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.blueGrey[300],
+                    ),
+                  ),
+                  maxLines: 1,
+                  controller: _searchControl,
                 ),
-                maxLines: 1,
-                controller: _searchControl,
               ),
             ),
           ),
@@ -185,6 +194,7 @@ class _HomeState extends State<Home> {
 
   Widget buildHorizontalList(BuildContext context) {
     return Container(
+      color: Colors.greenAccent,
       padding: EdgeInsets.only(top: 10.0, left: 20.0),
       height: 250.0,
       width: MediaQuery.of(context).size.width,

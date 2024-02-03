@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bhromon/helpers/AttractionModel.dart';
 import 'package:bhromon/helpers/horizontal_place_item.dart';
 import 'package:bhromon/helpers/vertical_place_item.dart';
+import 'package:search_map_place_updated/search_map_place_updated.dart';
+
+import 'const.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -29,7 +33,9 @@ class _HomeState extends State<Home> {
 
   Future<void> _fetchAttractions() async {
     try {
-      final Uri uri = Uri.parse('https://travel-advisor.p.rapidapi.com/attractions/list-by-latlng').replace(queryParameters: {
+      final Uri uri = Uri.parse(
+              'https://travel-advisor.p.rapidapi.com/attractions/list-by-latlng')
+          .replace(queryParameters: {
         'longitude': longitude,
         'latitude': latitude,
         'lunit': 'km',
@@ -100,7 +106,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,66 +133,39 @@ class _HomeState extends State<Home> {
               child: Text(
                 "Where are you going?",
                 style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white
-                ),
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
             ),
           ),
           Container(
-            color: Colors.greenAccent,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Container(
-
-                decoration: BoxDecoration(
-                  color: Colors.blueGrey[50],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5.0),
+              color: Colors.greenAccent,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Expanded(
+                  child: SearchMapPlaceWidget(
+                    apiKey: GOOGlE_MAPS_API_KEY,
+                    language: 'en',
+                    location: LatLng(3233, 123),
+                    radius: 30000,
+                    hasClearButton: false,
+                    bgColor: Colors.white,
+                    textColor: Colors.black,
+                    placeholder: "Enter Your Location",
+                    placeType: PlaceType.address,
+                    onSelected: (Place place) async {},
                   ),
                 ),
-                child: TextField(
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.blueGrey[300],
-                  ),
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    hintText:  "E.g: Dhaka, Bangladesh",
-                    prefixIcon: Icon(
-                      Icons.location_on,
-                      color: Colors.blueGrey[300],
-                    ),
-                    hintStyle: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.blueGrey[300],
-                    ),
-                  ),
-                  maxLines: 1,
-                  controller: _searchControl,
-                ),
-              ),
-            ),
-          ),
+              )),
           buildHorizontalList(context),
           buildVerticalList(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){_fetchAttractions();},
+        onPressed: () {
+          _fetchAttractions();
+        },
       ),
     );
   }

@@ -126,6 +126,28 @@ class _ToolsState extends State<Tools> {
                     url: 'https://translate.google.com/',
                   ),
                   buildCard(
+                    title: "Rent-A-Car",
+                    icon: Icons.car_rental,
+                    color: ColorSys.secoundryLight,
+                    url: '',
+                    onTap: (){
+                      showDialog(
+                        context: context,
+                        builder: (context){
+                          return AlertDialog(
+                            alignment: Alignment.center,
+                            title: Text("Call Samira and Sharmin", style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18
+                            ),
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  ),
+                  buildCard(
                     title: "Sign Out",
                     icon: Icons.logout,
                     color: ColorSys.secoundryLight,

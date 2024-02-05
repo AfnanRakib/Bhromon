@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:bhromon/pages/login.dart';
+import 'package:bhromon/pages/startpages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bhromon/helpers/const.dart';
@@ -54,6 +55,7 @@ class _SignupPageState extends State<SignupPage> {
             );
           },
         );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> StartPage()),);
       } on FirebaseAuthException catch (e) {
         showDialog(
           context: context,

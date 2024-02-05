@@ -111,6 +111,7 @@ class _HomeState extends State<Home> {
       body: ListView(
         children: <Widget>[
           Container(
+            color: ColorSys.secoundryLight,
             child: Padding(
               padding: EdgeInsets.all(20.0),
               child: Text(
@@ -118,12 +119,13 @@ class _HomeState extends State<Home> {
                 style: TextStyle(
                   fontSize: 30.0,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black
+                  color: Colors.white
                 ),
               ),
             ),
           ),
           Container(
+            color: ColorSys.secoundryLight,
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Container(
@@ -169,6 +171,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           Container(
+            color: ColorSys.secoundryLight,
             child: Padding(
               padding: EdgeInsets.all(20.0),
               child: Text(
@@ -176,17 +179,15 @@ class _HomeState extends State<Home> {
                 style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black
+                    color: Colors.white
                 ),
               ),
             ),
           ),
           buildHorizontalList(context),
+          Divider(thickness: 1,),
           buildVerticalList(),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){_fetchAttractions();},
       ),
     );
   }

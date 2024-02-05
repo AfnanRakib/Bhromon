@@ -15,12 +15,6 @@ class Details extends StatelessWidget {
           icon: Icon(Icons.arrow_back,color: Colors.white,),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications, size: 30, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: ListView(
         children: <Widget>[

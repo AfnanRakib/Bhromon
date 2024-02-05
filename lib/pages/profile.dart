@@ -89,75 +89,77 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       drawer: Tools(),
       appBar: AppBar(),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height / 3,
-                    width: MediaQuery.of(context).size.width / 2,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/profile.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 90,
+                  backgroundImage: AssetImage('assets/profile.jpg'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Column(
+                    children: <Widget>[
+                      makeInput(
+                          icon: Icons.email,
+                          label: "Email",
+                          fieldController: emailController,
+                          readOnly: true),
+                      makeInput(
+                          icon: Icons.account_circle,
+                          label: "Name",
+                          fieldController: nameController,
+                          readOnly: true),
+                      makeInput(
+                          icon: Icons.landscape,
+                          label: "Country",
+                          fieldController: countryController,
+                          readOnly: true),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Column(
-                      children: <Widget>[
-                        makeInput(
-                            label: "Email",
-                            fieldController: emailController,
-                            readOnly: true),
-                        makeInput(
-                            label: "Name",
-                            fieldController: nameController,
-                            readOnly: true),
-                        makeInput(
-                            label: "Country",
-                            fieldController: countryController,
-                            readOnly: true),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: passReset,
-                    child: Text("Reset Password", style: TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 18
-                    ),),
-                  ),
-                ],
-              ),
+                ),
+                GestureDetector(
+                  onTap: passReset,
+                  child: Text("Reset Password", style: TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 18
+                  ),),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   Widget makeInput(
-      {label, fieldController, obscureText = false, readOnly = false}) {
+      {label, fieldController, obscureText = false, readOnly = false,icon}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: Colors.black87,
-          ),
+        Row(
+          children: [
+            Icon(icon),
+            SizedBox(width: 5),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 5),
         TextField(
           readOnly: readOnly,
           obscureText: obscureText,
           controller: fieldController,
+          textAlign: TextAlign.justify,
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,

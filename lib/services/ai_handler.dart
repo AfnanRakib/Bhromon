@@ -1,10 +1,9 @@
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
-import 'package:bhromon/widgets/chat_item.dart';
 
 class AIHandler {
  //late final request;
   final _openAI = OpenAI.instance.build(
-    token: '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',
+    token: 'sk-PlblAHnPZmk4WaN54IUaT3BlbkFJCZDqzNkVq7QsdcaaqA1qq',
     baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 20)),
     enableLog: true,
   );
@@ -35,7 +34,6 @@ class AIHandler {
   }
 
   void dispose() {
-    //_openAI.onChatCompletionSSE(request: request, onCancel: onCancel);
 
     mCancel?.cancelToken.cancel("canceled");
   }

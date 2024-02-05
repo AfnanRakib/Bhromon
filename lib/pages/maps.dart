@@ -6,11 +6,11 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:bhromon/pages/const.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:search_map_place_updated/search_map_place_updated.dart';
 
+import 'package:bhromon/pages//const.dart';
 
 class Maps extends StatefulWidget {
   const Maps({super.key});
@@ -19,10 +19,9 @@ class Maps extends StatefulWidget {
   State<Maps> createState() => _MapPageState();
 }
 
-class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
-
+class _MapPageState extends State<Maps> with SingleTickerProviderStateMixin {
   final Completer<GoogleMapController> _mapController =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController>();
 
   LatLng? _currentPos;
   LatLng? _sourcePos;
@@ -31,15 +30,17 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
   Marker? _destination;
   String curr = " ";
   bool _setMArkVisible = false;
+  bool _repointSource = false;
+  bool _repointDest = false;
+  String selectedMarker = "Markers";
+  Widget? MarkerRemoveMode;
 
   Map<PolylineId, Polyline> polylines = {};
 
   @override
   void initState() {
-
     super.initState();
     _init();
-
   }
 
   void _changeMapType(MapType mapType) {
@@ -54,159 +55,192 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
     return Scaffold(
       body: _currentPos == null
           ? Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                colors: [Colors.blueGrey, Colors.greenAccent],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0, 1],
-                tileMode: TileMode.clamp,
-              )),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blueGrey, Colors.greenAccent],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0, 1],
+              tileMode: TileMode.clamp,
+            )),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
 
-                  //loading animation can be putdown here
-                  children: <Widget>[
-                    SpinKitPulsingGrid(
-                      color: Colors.white,
-                      duration: Duration(milliseconds: 1000),
-                    ),
-                    Text(
-                      " loading....",
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontStyle: FontStyle.italic,
-                          color: Colors.white),
-                    ),
-                  ]),
-            )
+            //loading animation can be putdown here
+            children: <Widget>[
+              SpinKitPulsingGrid(
+                color: Colors.white,
+                duration: Duration(milliseconds: 1000),
+              ),
+              Text(
+                " loading....",
+                style: TextStyle(
+                    fontSize: 40,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white),
+              ),
+            ]),
+      )
           : Column(
+        children: [
+          Container(
+            color: Colors.greenAccent,
+            child: Column(
               children: [
-                Container(
-                  color: Colors.greenAccent,
-                  child: Column(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 10, top: 35, right: 1, bottom: 1),
-                              child: Text(
-                                'Bhromon Maps',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  wordSpacing: 6,
-                                  fontSize: 25,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(10, 35, 0, 1),
-                              child: TextButton(
-                                onPressed: () => _cameraToPosition(
-                                  _origin!.position,
-                                ),
-                                child: const Text(
-                                  "Source",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 35, 1, 1),
-                              child: TextButton(
-                                onPressed: () => _cameraToPosition(
-                                  _destination!.position,
-                                ),
-                                child: const Text(
-                                  "destination",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                ),
-                              ),
-                            ),
-                          ]),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child:
-                            _searchBar(),
+                        padding: EdgeInsets.only(
+                            left: 10, top: 35, right: 1, bottom: 1),
+                        child: Text(
+                          'Bhromon Maps',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            wordSpacing: 6,
+                            fontSize: 25,
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: GoogleMap(
-                    mapType: _mapType,
-                    onMapCreated: ((GoogleMapController controller) =>
-                        _mapController.complete(controller)),
-                    initialCameraPosition: CameraPosition(
-                      target: _currentPos!, //bounds.northeast,
-                      zoom: 10.0,
-                    ),
-                    markers: {
-                      if (_origin != null) _origin!,
-                      if (_destination != null) _destination!,
-                      Marker(
-                          markerId: MarkerId("_currentLocation"),
-                          infoWindow: InfoWindow(title: curr),
-                          icon: BitmapDescriptor.defaultMarkerWithHue(
-                              BitmapDescriptor.hueRed),
-                          position: _currentPos!,
-                          onTap: () async{
-                            _sourcePos = _currentPos!;
-                            curr = await latlangToAddress(_sourcePos!);
-                            infoWindow: InfoWindow(title: curr);
-                            _addMarker(_sourcePos!);
-                          }),
-                    },
-                   // onLongPress: _addMarker,
-                    polylines: Set<Polyline>.of(polylines.values),
-                  ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 35, 0, 1),
+                        child: TextButton(
+                          onPressed: () {
+                            _cameraToPosition(
+                              _origin!.position,
+                            );
+                            setState(() {
+                              _repointSource = true;
+                              _repointDest = false;
+                              _setMArkVisible = false;
+
+                              selectedMarker = "source";
+                            });
+
+
+                          },
+                          child: const Text(
+                            "Source",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 17),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 35, 1, 1),
+                        child: TextButton(
+                          onPressed: () {
+                            _cameraToPosition(
+                              _destination!.position,
+                            );
+                            setState(() {
+                              _repointDest = true;
+                              _setMArkVisible = false;
+                              _repointSource = false;
+
+                              selectedMarker = "Destination";
+                            });
+
+
+                          },
+                          child: const Text(
+                            "destination",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 17),
+                          ),
+                        ),
+                      ),
+                    ]),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _searchBar(),
                 ),
               ],
             ),
+          ),
+          Expanded(
+            child:GestureDetector(
+              onDoubleTap:(){
+                setState(() {
+                  _repointDest=false;
+                  _repointSource = false;
+                  _setMArkVisible = true;
+                });
+              } ,
+              child: GoogleMap(
+                mapType: _mapType,
+                onMapCreated: ((GoogleMapController controller) =>
+                    _mapController.complete(controller)),
+                initialCameraPosition: CameraPosition(
+                  target: _currentPos!, //bounds.northeast,
+                  zoom: 10.0,
+                ),
+                markers: {
+                  if (_origin != null) _origin!,
+                  if (_destination != null) _destination!,
+                  Marker(
+                      markerId: MarkerId("_currentLocation"),
+                      infoWindow: InfoWindow(title: curr),
+                      icon: BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueRed),
+                      position: _currentPos!,
+                      onTap: () async {
+                        _sourcePos = _currentPos!;
+                        curr = await latlangToAddress(_sourcePos!);
+                        infoWindow:
+                        InfoWindow(title: curr);
+                        _addMarker(_sourcePos!);
+                      }),
+                },
+                // onLongPress: _addMarker,
+                polylines: Set<Polyline>.of(polylines.values),
+              ),
+            ),
+          ),
+        ],
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: _currentPos != null
           ? Row(
-          mainAxisAlignment:MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1, bottom: 10, left: 1),
-                      child: _buildSpeedDial(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1, bottom: 10, right: 5),
-                      child:FloatingActionButton(
-                        onPressed: () {
-                          _cameraToPosition(_currentPos!);
-                        },
-                        backgroundColor: Colors.greenAccent,
-                        child: Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+              Padding(
+                padding:
+                const EdgeInsets.only(top: 1, bottom: 10, left: 1),
+                child: _buildSpeedDial(),
+              ),
+              Padding(
+                padding:
+                const EdgeInsets.only(top: 1, bottom: 10, right: 5),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    _cameraToPosition(_currentPos!);
+                  },
+                  backgroundColor: Colors.greenAccent,
+                  child: Icon(
+                    Icons.location_on,
+                    color: Colors.white,
+                  ),
                 ),
-              Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 70.0),
-                    child: _removeMarker(),
-                  )
-              )
+              ),
             ],
-          )
+          ),
+          Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 70.0),
+                child: MarkerRemoveMode = (_setMArkVisible&&!_repointSource&&!_repointDest)?_removeMarker():
+                (!_setMArkVisible&&_repointSource&&!_repointDest)?_removeSource():_removeDest(),
+              ))
+        ],
+      )
           : null,
     );
   }
@@ -244,8 +278,8 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
       distanceFilter: 100,
     );
     StreamSubscription<Position> positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
+    Geolocator.getPositionStream(locationSettings: locationSettings)
+        .listen((Position? position) {
       setState(() {
         _currentPos = LatLng(position!.latitude, position.longitude);
         print(
@@ -300,11 +334,10 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
       });
     }
   }
-
   void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
-      polylines.clear();
-      String source = await latlangToAddress(pos) as String;
+
+      String source = await latlangToAddress(pos) ;
       setState(() {
         _origin = Marker(
             markerId: MarkerId(source),
@@ -313,23 +346,36 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
                 BitmapDescriptor.hueGreen),
             position: pos);
         _sourcePos = pos;
-        _destination = null;
-        _setMArkVisible = true;
+        if(!_repointSource ){
+          _destination = null;
+          _destinationPos = null;
+          polylines.clear();
+        }
+        setState(() {
+          _setMArkVisible = true;
+          _repointSource = false;
+          _repointDest = false;
+        });
+
         updatePolylines(_sourcePos!, _destinationPos!);
       });
     } else {
-      String dest = await latlangToAddress(pos) as String;
+      String dest = await latlangToAddress(pos) ;
       setState(() {
         if (_destination == null) {
           _destination = Marker(
             markerId: MarkerId(dest),
             infoWindow: InfoWindow(title: dest),
             icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
             position: pos,
           );
           _destinationPos = pos;
-          _setMArkVisible = true;
+          setState(() {
+            _setMArkVisible = true;
+            _repointSource = false;
+            _repointDest = false;
+          });
           updatePolylines(_sourcePos!, _destinationPos!);
         }
       });
@@ -398,7 +444,7 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
 
   Future<String> latlangToAddress(LatLng pos) async {
     List<Placemark> placemark =
-        await placemarkFromCoordinates(pos.latitude, pos.longitude);
+    await placemarkFromCoordinates(pos.latitude, pos.longitude);
     Placemark place = placemark.first;
     String address =
         "${place.street}, ${place.administrativeArea} ,${place.country}";
@@ -417,11 +463,11 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
       hasClearButton: false,
       bgColor: Colors.white,
       textColor: Colors.black,
-      placeholder: curr == " " ? "Enter Your Location" : curr,
+      placeholder: curr == " " ? "Where do you want to go?" : curr,
       placeType: PlaceType.address,
       onSelected: (Place place) async {
         final geolocation = await place.geolocation;
-          _addMarker(geolocation!.coordinates);
+        _addMarker(geolocation!.coordinates);
         final GoogleMapController controller1 = await _mapController.future;
         controller1
             .animateCamera(CameraUpdate.newLatLng(geolocation!.coordinates));
@@ -432,7 +478,6 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
   }
 
   Widget _removeMarker() {
-
     return Visibility(
       visible: _setMArkVisible,
       child: FloatingActionButton(
@@ -440,28 +485,89 @@ class _MapPageState extends State<Maps>  with SingleTickerProviderStateMixin{
         backgroundColor: Colors.greenAccent,
         shape: StadiumBorder(),
         onPressed: () {
-          setState(()  {
-            if(_setMArkVisible){
-              _origin =null;
-              _sourcePos = null;
-              _destinationPos =null;
-              _destination =null;
-              polylines.clear();
+          setState(() {
+            if (_setMArkVisible) {
+
+              if (!_repointDest && !_repointSource) {
+                _origin = null;
+                _sourcePos = null;
+                _destinationPos = null;
+                _destination = null;
+                polylines.clear();
+              }
+
               _setMArkVisible = false;
             }
           });
         },
         child: Text(
-          "Remove Marker",
-
+          "Remove Markers",
           style: TextStyle(
             color: Colors.white,
-
-
           ),
         ),
       ),
     );
   }
 
+  Widget _removeDest() {
+    return Visibility(
+      visible: _repointDest,
+      child: FloatingActionButton(
+        isExtended: true,
+        backgroundColor: Colors.greenAccent,
+        shape: StadiumBorder(),
+        onPressed: () {
+          setState(() {
+            if (_repointDest) {
+              if (_repointDest && !_repointSource) {
+                _destinationPos = null;
+                _destination = null;
+                polylines.clear();
+              }
+
+              _repointDest = false;
+            }
+          });
+        },
+        child: Text(
+          "Remove Destination",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _removeSource() {
+
+    return Visibility(
+      visible: _repointSource,
+      child: FloatingActionButton(
+        isExtended: true,
+        backgroundColor: Colors.greenAccent,
+        shape: StadiumBorder(),
+        onPressed: () {
+          setState(() {
+            if (_repointSource) {
+
+              if (!_repointDest && _repointSource) {
+                _origin = null;
+                _sourcePos = null;
+                polylines.clear();
+              }
+              _repointSource = false;
+            }
+          });
+        },
+        child: Text(
+          "Remove Source",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
 }

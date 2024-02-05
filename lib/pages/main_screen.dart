@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
             barIcon(icon: Icons.home, page: 0),
             barIcon(icon: Icons.explore, page: 1),
             barIcon(icon: Icons.messenger, page: 2,),
-            barIcon(icon: Icons.person, page: 3),
+            barIcon(icon: Icons.account_circle_rounded, page: 3),
             SizedBox(width: 7.0),
           ],
         ),

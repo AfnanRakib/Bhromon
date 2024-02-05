@@ -15,6 +15,7 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
 

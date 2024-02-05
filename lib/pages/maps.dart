@@ -10,7 +10,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:search_map_place_updated/search_map_place_updated.dart';
 
-import 'package:bhromon/pages//const.dart';
+import 'package:bhromon/pages/const.dart';
 
 class Maps extends StatefulWidget {
   const Maps({super.key});

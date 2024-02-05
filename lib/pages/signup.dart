@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:bhromon/pages/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bhromon/helpers/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,20 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
+
+  late User currentUser;
+  Future addUserDetails(String email,String name,String country, String UID) async{
+    await FirebaseFirestore.instance.collection('users').add(
+      {
+        'email':email,
+        'name':name,
+        'country':country,
+        'uid':UID,
+      }
+    );
+  }
 
   Future<void> signUp() async {
     if(passwordController.text==confirmPasswordController.text) {
@@ -22,6 +37,9 @@ class _SignupPageState extends State<SignupPage> {
           email: emailController.text,
           password: passwordController.text,
         );
+        currentUser = FirebaseAuth.instance.currentUser!;
+        print(currentUser.uid);
+        addUserDetails(emailController.text, nameController.text, countryController.text,currentUser.uid);
         showDialog(
           context: context,
           builder: (context){
@@ -136,6 +154,14 @@ class _SignupPageState extends State<SignupPage> {
                   FadeInUp(
                     duration: Duration(milliseconds: 1400),
                     child: makeInput(label: "Confirm Password", fieldController: confirmPasswordController, obscureText: true),
+                  ),
+                  FadeInUp(
+                    duration: Duration(milliseconds: 1400),
+                    child: makeInput(label: "Name", fieldController: nameController, obscureText: true),
+                  ),
+                  FadeInUp(
+                    duration: Duration(milliseconds: 1400),
+                    child: makeInput(label: "Country", fieldController: countryController, obscureText: true),
                   ),
                 ],
               ),

@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.2.3
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
+  cloud_firestore: ^4.14.0
   chat_gpt_sdk: ^2.2.5
   speech_to_text: ^6.5.1
   google_maps_flutter: ^2.5.1

@@ -33,12 +33,13 @@ class HorizontalPlaceItem extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15.0,
-                    color: Colors.white
+                    color: Colors.black
                   ),
                   maxLines: 2,
                   textAlign: TextAlign.left,
                 ),
               ),
+              SizedBox(height: 5),
               Expanded(
                 child: Container(
                   alignment: Alignment.topLeft,
@@ -47,7 +48,7 @@ class HorizontalPlaceItem extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 13.0,
-                      color: Colors.blueGrey[300],
+                      color: Colors.black,
                     ),
                     maxLines: 1,
                     textAlign: TextAlign.left,

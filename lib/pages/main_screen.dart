@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:bhromon/gptMain/gpt_Main.dart';
 import 'package:bhromon/pages/Tools.dart';
 import 'package:bhromon/pages/maps.dart';
+import 'package:bhromon/pages/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
             barIcon(icon: Icons.home, page: 0),
             barIcon(icon: Icons.explore, page: 1),
             barIcon(icon: Icons.messenger, page: 2,),
-            barIcon(icon: Icons.window, page: 3),
+            barIcon(icon: Icons.person, page: 3),
             SizedBox(width: 7.0),
           ],
         ),
@@ -53,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
       case 2:
         return bhromon_gpt();
       case 3:
-        return Tools();
+        return ProfilePage();
       default:
         return Container();
     }

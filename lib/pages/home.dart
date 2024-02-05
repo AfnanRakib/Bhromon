@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:bhromon/helpers/const.dart';
+import 'package:bhromon/pages/Tools.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -104,25 +106,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.greenAccent,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.logout,
-              size: 30,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-          ),
-        ],
-      ),
+      drawer: Tools(),
+      appBar: AppBar(),
       body: ListView(
         children: <Widget>[
           Container(
-            color: Colors.greenAccent,
             child: Padding(
               padding: EdgeInsets.all(20.0),
               child: Text(
@@ -130,17 +118,15 @@ class _HomeState extends State<Home> {
                 style: TextStyle(
                   fontSize: 30.0,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white
+                  color: Colors.black
                 ),
               ),
             ),
           ),
           Container(
-            color: Colors.greenAccent,
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Container(
-
                 decoration: BoxDecoration(
                   color: Colors.blueGrey[50],
                   borderRadius: BorderRadius.all(
@@ -182,6 +168,19 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
+          Container(
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                "Suggestions",
+                style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black
+                ),
+              ),
+            ),
+          ),
           buildHorizontalList(context),
           buildVerticalList(),
         ],
@@ -194,7 +193,6 @@ class _HomeState extends State<Home> {
 
   Widget buildHorizontalList(BuildContext context) {
     return Container(
-      color: Colors.greenAccent,
       padding: EdgeInsets.only(top: 10.0, left: 20.0),
       height: 250.0,
       width: MediaQuery.of(context).size.width,

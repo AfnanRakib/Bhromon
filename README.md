@@ -9,7 +9,8 @@
 - [Introduction](#introduction)
 - [Objective](#objective)
 - [Technologies Used](#technologies-used)
-- [Live Demo and Video](#live-demo-and-video)
+- [Demo Video](#demo-video)
+- [Getting Started](#getting-started)
 - [Team Members](#team-members)
 
 ## Introduction  
@@ -36,6 +37,9 @@ This all-in-one solution improves convenience and ensures a seamless travel expe
 - **ChatGPT**: Integrated as part of the Bhromon AI assistant.  
 - **URL Firing**: For redirecting users to external booking systems.
 
+## Demo Video  
+
+Watch our project walkthrough video here: https://youtu.be/Zo0I89VcN7o?si=I1UjrDfxitbfbbsA
 
 ## Getting Started
 
@@ -63,11 +67,6 @@ flutter doctor
    ```bash
    flutter run
    ```
-
-
-## Demo Video  
-
-Watch our project walkthrough video here: https://youtu.be/Zo0I89VcN7o?si=I1UjrDfxitbfbbsA
 
 ## Team Members  
 - **Md. Rakib Hasan**   

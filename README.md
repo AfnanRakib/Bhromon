@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="assets/app_icon.png" alt="logo" width="200" height="auto" />
+  <img src="assets/Bhromon.png" alt="logo" width="200" height="auto" />
   <h1>BHROMON</h1>
   
 </div>  
